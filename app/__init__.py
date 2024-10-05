@@ -27,29 +27,33 @@ def create_app(config_name='development'):
     
     current_working_directory = os.getcwd()
 
-    # Go to the parent directory of the current working directory
-    parent_directory = os.path.abspath(os.path.join(current_working_directory, '..'))
+    # # Go to the parent directory of the current working directory
+    # parent_directory = os.path.abspath(os.path.join(current_working_directory, '..'))
 
-    # Define the path to the React build folder relative to TimeTrackVerify
-    static_folder_path = os.path.join(parent_directory, 'front', 'build')
-    print("Resolved static folder path:", static_folder_path)
+    # # Define the path to the React build folder relative to TimeTrackVerify
+    # static_folder_path = os.path.join(parent_directory, 'front', 'build')
+    # print("Resolved static folder path:", static_folder_path)
 
 
-    # Initialize Flask with the correct static folder
-    app = Flask(__name__, static_folder=static_folder_path, static_url_path='/')
-    app.config.from_object(config_by_name[config_name])
-    print("Resolved static folder path:", os.path.exists(static_folder_path))
-    print("Static folder being used:", app.static_folder)
-    # Serve React App for all other routes
-    @app.route('/', defaults={'path': ''})
-    @app.route('/<path:path>')
-    def serve_react_app(path):        
-        return send_from_directory(app.static_folder, 'index.html')
-    
-    CORS(app)
-
-    # app = Flask(__name__)    
+    # # Initialize Flask with the correct static folder
+    # app = Flask(__name__, static_folder=static_folder_path, static_url_path='/')
     # app.config.from_object(config_by_name[config_name])
+    # print("Resolved static folder path:", os.path.exists(static_folder_path))
+    # print("Static folder being used:", app.static_folder)
+    # # Serve React App for all other routes
+    # @app.route('/', defaults={'path': ''})
+    # @app.route('/<path:path>')
+    # def serve_react_app(path):        
+    #     return send_from_directory(app.static_folder, 'index.html')
+    
+    # CORS(app) 
+    app = Flask(__name__)    
+    app.config.from_object(config_by_name[config_name])
+        
+    # CORS(app, resources={r"/api/*": {"origins": "*", "methods": ["GET", "POST", "OPTIONS", "PUT", "DELETE"]}}, supports_credentials=False)
+    CORS(app, resources={r"/verify": {"origins": "*"}}, methods=['POST', 'OPTIONS'])
+
+
     
 
     # Initialize ext
@@ -61,7 +65,7 @@ def create_app(config_name='development'):
     app.register_blueprint(api)
 
     
-        # Set up logging
+    # Set up logging
     if not app.debug:
         # Log to stdout
         gunicorn_logger = logging.getLogger('gunicorn.error')
