@@ -51,8 +51,8 @@ def create_app(config_name='development'):
     app.config.from_object(config_by_name[config_name])
         
     # CORS(app, resources={r"/api/*": {"origins": "*", "methods": ["GET", "POST", "OPTIONS", "PUT", "DELETE"]}}, supports_credentials=False)
-    CORS(app, resources={r"/verify": {"origins": "*"}}, methods=['POST', 'OPTIONS'])
-
+    # CORS(app, resources={r"/verify": {"origins": "*"}}, methods=['POST', 'OPTIONS'])
+    CORS(app, resources={r"/verify": {"origins": ["https://panda-ts-verify.vercel.app"]}}, methods=["POST", "OPTIONS"])
 
     
 
