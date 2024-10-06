@@ -75,7 +75,7 @@ def create_app(config_name='development'):
     #     "supports_credentials": True  # Allow cookies and credentials (if needed)
     # }})
     # Replace with your actual frontend domain
-    frontend_origin = 'https://panda-ts-verify-kzqwltrbj-abdels-projects-b19ab3f5.vercel.app'
+    frontend_origin = 'https://panda-ts-verify.vercel.app'
 
     CORS(app, resources={
         r"/verify": {
