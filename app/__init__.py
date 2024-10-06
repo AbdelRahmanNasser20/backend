@@ -52,7 +52,40 @@ def create_app(config_name='development'):
         
     # CORS(app, resources={r"/api/*": {"origins": "*", "methods": ["GET", "POST", "OPTIONS", "PUT", "DELETE"]}}, supports_credentials=False)
     # CORS(app, resources={r"/verify": {"origins": "*"}}, methods=['POST', 'OPTIONS'])
-    CORS(app, resources={r"/verify": {"origins": ["https://panda-ts-verify.vercel.app"]}}, methods=["POST", "OPTIONS"])
+    # CORS(app, resources={r"/verify": {"origins": ["https://panda-ts-verify.vercel.app"]}}, methods=["POST", "OPTIONS"])
+        # Proper CORS configuration
+    # CORS(app, resources={
+    #     r"/verify": {
+    #         "origins": [
+    #             "https://panda-ts-verify.vercel.app",
+    #             "https://panda-ts-verify-gwtpk4asa-abdels-projects-b19ab3f5.vercel.app"
+    #         ],
+    #         "methods": ["POST", "OPTIONS"],  # Allow specific HTTP methods
+    #         "supports_credentials": True  # Allow credentials if needed
+    #     }
+    # })
+    
+    # CORS(app, resources={r"/*": {"origins": "*", "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"], "allow_headers": "*"}})
+        # Allow all origins with explicit methods and headers allowed, including preflight
+    # CORS(app, resources={r"/*": {
+    #     "origins": "*",  # Allow all origins
+    #     "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],  # Allow specific methods
+    #     "allow_headers": ["Content-Type", "Authorization"],  # Allow headers like Content-Type and Authorization
+    #     "expose_headers": ["Content-Type", "Authorization"],  # Expose headers to frontend
+    #     "supports_credentials": True  # Allow cookies and credentials (if needed)
+    # }})
+    # Replace with your actual frontend domain
+    frontend_origin = 'https://panda-ts-verify-kzqwltrbj-abdels-projects-b19ab3f5.vercel.app'
+
+    CORS(app, resources={
+        r"/verify": {
+            "origins": [frontend_origin],
+            "methods": ["GET", "POST", "OPTIONS"],  # Include OPTIONS
+            "allow_headers": ["Content-Type", "Authorization"],
+            "expose_headers": ["Content-Type", "Authorization"],
+            "supports_credentials": True
+        }
+    })
 
     
 
